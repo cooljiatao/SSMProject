@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--region IOC模式-->
+    <bean id="userDao" class="me.jiatao.ssm.spring.A_Ioc.UserDaoImpl"/>
+    <bean name="userServiceImpl2" class="me.jiatao.ssm.spring.A_Ioc.UserServiceImpl2">
+        <property name="userDao2" ref="userDao"/>
+    </bean>
+    <!--endregion-->
+
+
+    <!--region 实例化bean的4种方式 -->
+    <!-- 1.:默认构造器
+    在实例化的时候，自动调用默认的构造器，相当于Bean1 bean1 =new Bean1();
+    -->
+    <bean id="bean1" class="me.jiatao.ssm.spring.A_Bean.Bean1"></bean>
+    <!-- 2：静态工厂的方式创建bean
+        用来自己定义一下工厂，让spring的大工厂来调用我们的小工厂，可以将对象的创建权限交给小工厂
+        factory-method：工厂的静态方法，在bean的实例化的时候，会自动调用
+        -->
+    <bean id="bean2" class="me.jiatao.ssm.spring.A_Bean.Bean2Factory" factory-method="getBean2"/>
+
+
+    <!--3：实例工厂的方式实例化bean -->
+    <bean id="bean3Factory" class="me.jiatao.ssm.spring.A_Bean.Bean3Factory"/>
+    <!-- factory-bean相当于ref：引用一个bean对象 -->
+    <bean id="bean3" factory-bean="bean3Factory" factory-method="getBean3"/>
+
+    <!-- 4.实现接口FactoryBean的方法
+        spring在准备实例化bean的时候，new Bean4FactoryBean,没急着返回bean对象。
+        会判断，类型对象是否实现了FactoryBean接口，如果实现了，就调用接口的getObject()方法，得到bean的示例-返回。
+         -->
+    <bean id="bean4" class="me.jiatao.ssm.spring.A_Bean.Bean4FactoryBean"/>
+    <!--endregion-->
+
+
+    <!--region scope-->
+    <!--
+		bean的作用范围
+		scope:配置作用范围的，默认值就是singleton单例
+	 -->
+    <!-- 单例 -->
+    <!-- <bean id="singletonBean" class="SingletonBean" scope="singleton"/> -->
+    <bean id="singletonBean" class="me.jiatao.ssm.spring.A_Scope.SingletonBean"/>
+    <!-- 多例 -->
+    <bean id="prototypeBean" class="me.jiatao.ssm.spring.A_Scope.PrototypeBean" scope="prototype"/>
+    <!--endregion-->
+
+
+    <!--region Bean的生命周期-->
+    <!-- 生命周期调用的两个方法
+        init-method:初始化时（后）调用的，bean中的共有方法即可
+        destroy-method:销毁时（前）被调用的。
+
+        原因：销毁方法的执行必须满足两个条件：
+            1）	单例（singleton）的bean才会可以手动销毁。
+            2）	必须手动关闭容器（调用close的方法）时，才会执行手动销毁的方法。
+        -->
+    <bean id="lifeCycleBean" class="me.jiatao.ssm.spring.A_LifeCycle.LifeCycleBean" init-method="init" destroy-method="destroy"
+          scope="singleton"/>
+    <!--endregion-->
+
+
+    <!--region 后处理Bean（BeanPostProcessor接口）-->
+    <!-- 后处理bean：
+        spring在初始化MyBeanPostProcessor的时候，
+        判断是否实现了BeanPostProcessor，如果实现了，
+        就采用动态代理的方式，对所有的bean对象增强 -->
+    <bean class="me.jiatao.ssm.spring.A_Processor.MyBeanPostProcessor"/>
+    <!--endregion-->
+
+
+    <!--region Bean属性的依赖注入-->
+    <!-- 构造器注入属性的值 -->
+    <bean id="car" class="me.jiatao.ssm.spring.A_Property.Car">
+        <!--constructor-arg：告诉spring容器，要调用有参构造方法了，不再调用默认的构造方法了
+        new Car(1,"宝马",99999d)
+        参数第一组：定位属性
+            * index:根据索引定位属性，0表示第一个位置
+            * name：根据属性参数名称定位属性
+            * type:根据属性数据类型定位属性
+        参数第二组：值
+            * value:简单的值，字符串
+            * ref:复杂的（由spring容器创建的bean对象）
+        -->
+        <!-- <constructor-arg index="0" value="1"/> -->
+        <constructor-arg index="0" name="id" value="1"/>
+        <!-- <constructor-arg name="name" value="宝马1代"/> -->
+        <constructor-arg name="name" value="宝马2代">
+            <!--<value>宝马2代</value>-->
+        </constructor-arg>
+        <constructor-arg type="java.lang.Double" value="99999d"/>
+    </bean>
+
+    <!-- setter方法属性注入:调用默认构造器，相当于new Person() -->
+    <bean id="person" class="me.jiatao.ssm.spring.A_Property.Person">
+        <!--
+        property：专门进行setter属性注入用的标签 。
+            * name:setter方法的属性的名字,例如SetXxx-那么name的属性值为xxx。
+            * value:简单的值
+            * ref：bean的名字，对象的引用
+        -->
+        <property name="id" value="1001"/>
+        <property name="name" value="Tom"/>
+        <!-- <property name="car" ref="car"/> --><!--等同于-->
+        <property name="car">
+            <ref bean="car"/>
+        </property>
+    </bean>
+
+    <!--p标签的使用-->
+    <bean id="person2" class="me.jiatao.ssm.spring.A_Property.Person" p:id="1002" p:name="jia" p:car-ref="car"/>
+
+
+    <!-- spEL表达式 -->
+    <!-- car.name相当于car.getName() -->
+    <bean id="person3" class="me.jiatao.ssm.spring.A_Property.Person" p:id="#{car.id}" p:name="#{car.name}" p:car="#{car}"/>
+
+    <!-- spEL表达式 -->
+    <!-- car.id相当于car.getId() -->
+    <bean id="person4" class="me.jiatao.ssm.spring.A_Property.Person" p:id="#{1+1}" p:name="#{'jiatao'.toUpperCase()}" p:car="#{car}"/>
+
+    <!--endregion-->
+</beans>

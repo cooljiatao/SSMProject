@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 开启spring的注解功能 ：让注解有效了，识别注解-->
+    <context:annotation-config/>
+    <!-- 配置注解扫描
+            context:component-scan:专门扫描含有@Component注解的类，自动将其作为bean
+            base-package：要扫描包的路径,包含子包,cn.itcast.spring表示子包下的所有类定义注解都有效
+            注解扫描配置的时候，会自动开启注解功能，可以不用配置:<context:annotation-config/>
+    -->
+    <context:component-scan base-package="me.jiatao.ssm"/>
+
+</beans>
