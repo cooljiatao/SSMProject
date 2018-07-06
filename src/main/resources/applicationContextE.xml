@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 1:开启spring的注解功能 ：让注解有效了，识别注解-->
+    <context:annotation-config/>
+    <!-- 2:配置注解扫描
+            context:component-scan:专门扫描含有@Component注解的类，自动将其作为bean
+            base-package：要扫描包的路径,包含子包,cn.itcast.spring表示子包下的所有类定义注解都有效
+            注解扫描配置的时候，会自动开启注解功能，可以不用配置:<context:annotation-config/>
+    -->
+    <context:component-scan base-package="me.jiatao.ssm.spring.E_AspectJAnnotation"/>
+
+    <!-- 3：配置aop的aspectj的自动代理：
+			自动扫描bean组件中，含有@Aspect的bean，将其作为aop管理，开启动态代理    -->
+    <!--<aop:aspectj-autoproxy/>-->
+
+    <!--方案一：注解方式：-->
+    <!-- 配置aop的aspectj的自动代理：
+                自动扫描bean组件中，含有@Aspect的bean，将其作为aop管理，开启动态代理
+                proxy-target-class:设置是否使用cglib代理，默认是false，表示使用的是jdk接口代理
+                proxy-target-class="true"：表示cglib代理
+     -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!--方案二：配置文件XML的方式-->
+    <!--<aop:config proxy-target-class="true">-->
+    <!--</aop:config>-->
+
+</beans>
