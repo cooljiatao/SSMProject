@@ -15,7 +15,7 @@ public class SpringTestB {
     @Test
     public void annotationTest() {
 //          spring容器
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContextB.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContextB.xml");  
 
 
 //        CustomerService customerService=(CustomerService) applicationContext.getBean("customerService");
