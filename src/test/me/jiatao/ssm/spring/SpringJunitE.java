@@ -7,6 +7,7 @@ import me.jiatao.ssm.spring.E_AspectJAnnotation.ProductService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -20,9 +21,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SpringJunitE {
 
     @Autowired
-    private ICustomerService customerService;
+    @Qualifier("customerServiceE")
+    CustomerServiceImpl customerService;
+
     @Autowired
-    private ProductService productService;
+    @Qualifier("productServiceE")
+    ProductService productService;
 
     //测试
     @Test

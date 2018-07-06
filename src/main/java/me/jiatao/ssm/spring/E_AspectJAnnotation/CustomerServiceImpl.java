@@ -2,7 +2,7 @@ package me.jiatao.ssm.spring.E_AspectJAnnotation;
 
 import org.springframework.stereotype.Service;
 
-@Service("customerService")
+@Service("customerServiceE")
 public class CustomerServiceImpl implements ICustomerService {
 
     @Override

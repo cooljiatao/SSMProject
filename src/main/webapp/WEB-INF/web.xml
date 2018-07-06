@@ -14,7 +14,7 @@
     <!--Spring核心配置文件-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContextB.xml</param-value>
+        <param-value>classpath:applicationContextE.xml</param-value>
     </context-param>
 
     <!-- spring的核心监听器 -->

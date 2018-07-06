@@ -3,7 +3,7 @@ package me.jiatao.ssm.spring.E_AspectJAnnotation;
 
 import org.springframework.stereotype.Service;
 
-@Service("ProductService")
+@Service("productServiceE")
 public class ProductService {
     public void save() {
         System.out.println("商品保存了。。。。。");

@@ -16,7 +16,7 @@
             base-package：要扫描包的路径,包含子包,cn.itcast.spring表示子包下的所有类定义注解都有效
             注解扫描配置的时候，会自动开启注解功能，可以不用配置:<context:annotation-config/>
     -->
-    <context:component-scan base-package="me.jiatao.ssm.spring.E_AspectJAnnotation"/>
+    <context:component-scan base-package="me.jiatao.ssm"/>
 
     <!-- 3：配置aop的aspectj的自动代理：
 			自动扫描bean组件中，含有@Aspect的bean，将其作为aop管理，开启动态代理    -->
