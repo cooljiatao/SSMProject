@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 配置内置的数据源bean -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql:///student"/>
+        <property name="username" value="root"/>
+        <property name="password" value="jia"/>
+    </bean>
+    <!-- jdbctemplate对象 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!-- 注入数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+
+
+    <!-- c3p0连接池 -->
+    <bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql:///student"/>
+        <property name="user" value="root"/>
+        <property name="password" value="jia"/>
+    </bean>
+    <!-- jdbctemplate对象 -->
+    <bean id="c3p0JdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!-- 注入数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+
+    <!-- 引入外部属性配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!-- 配置内置的数据源bean，使用db.properties -->
+    <bean id="propertyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!-- jdbctemplate对象 -->
+    <bean id="c3p0JdbcTemplate2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!-- 注入数据源 -->
+        <property name="dataSource" ref="propertyDataSource"/>
+    </bean>
+
+
+
+
+    <!-- jdbctemplate对象 -->
+    <bean id="bookJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!-- 注入数据源 -->
+        <property name="dataSource" ref="propertyDataSource"/>
+    </bean>
+    <!-- 配置dao，注入jdbctemplate -->
+    <bean id="bookDao" class="me.jiatao.ssm.spring.F_JdbcTemplate.BookDao">
+        <!-- 方案一：在BookDao中提供jdbcTempate属性，通过set方法注入 jdbcTemplate-->
+        <!-- <property name="jdbcTemplate" ref="bookJdbcTemplate"/> -->
+        <!-- 方案二：BookDao类继承JdbcDaoSupport，直接注入数据源，就拥有了jdbctempate对象 -->
+        <property name="dataSource" ref="c3p0DataSource"/>
+    </bean>
+
+</beans>
