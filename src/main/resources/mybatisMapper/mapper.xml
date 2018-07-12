@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace :名称空间，唯一标识，不需要特别的起名称，只要保证所有的mapper中的名称空间，唯一即可 -->
+<mapper namespace="abc">
+	  <!-- sql语句的映射, mapperedStatement 
+	     resultType ：结果集对应的java类型,需要书写类的全路径
+	     #{id} :相当于 ？ 表示参数的占位
+	   -->
+	  <select id="selectUser" resultType="me.jiatao.ssm.mybatis.User">
+	   	 select * from tb_user where id = #{id}
+	  </select>
+</mapper>

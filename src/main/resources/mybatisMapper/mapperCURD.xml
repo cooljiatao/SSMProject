@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace :名称空间，唯一标识，不需要特别的起名称，只要保证所有的mapper中的名称空间，唯一即可 -->
+<mapper namespace="UserDao">
+    <!-- sql语句的映射, mapperedStatement
+       resultType ：结果集对应的java类型,需要书写类的全路径
+       #{id} :相当于 ？ 表示参数的占位
+     -->
+    <select id="queryAllUser" resultType="me.jiatao.ssm.mybatis.User">
+        select *
+        from tb_user
+    </select>
+
+    <select id="queryUserById" resultType="me.jiatao.ssm.mybatis.User">
+        select *
+        from tb_user
+        where id = #{id}
+    </select>
+
+
+    <insert id="saveUser">
+        INSERT INTO tb_user (
+            user_name,
+            password,
+            name,
+            age,
+            sex,
+            birthday,
+            created,
+            updated
+        )
+        VALUES
+            (
+                #{userName},
+                #{password},
+                #{name},
+                #{age},
+                #{sex},
+                #{birthday},
+                NOW(),
+                NOW()
+            );
+
+    </insert>
+    <update id="updateUser">
+        UPDATE mybatis.tb_user
+        SET
+            user_name = #{userName},
+            password  = #{password},
+            name      = #{name},
+            age       = #{age},
+            sex       = #{sex},
+            birthday  = #{birthday},
+            updated   = NOW()
+        WHERE
+            (id = #{id});
+    </update>
+
+    <delete id="deleteUserById">
+        DELETE FROM tb_user
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

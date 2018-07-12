@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- resource：外部properties文件的路径 -->
+    <properties resource="dbMybatis.properties"></properties>
+
+    <settings>
+        <!-- 开启驼峰命名规则匹配  -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <!-- type :类的全路径， alias ：别名 -->
+        <!-- <typeAlias type="cn.itcast.mybatis.pojo.User" alias="User"/> -->
+        <!-- name 表示包的路径
+             别名默认是实体类的类的名字，并且不区分大小写，但是通常属性的方式，和类的名字完全一致
+        -->
+        <package name="me.jiatao.ssm.mybatis"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driverClass}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <!--<environment id="itcast">-->
+        <!--<transactionManager type="JDBC"/>-->
+        <!--<dataSource type="POOLED">-->
+        <!--<property name="driver" value="${driver1}"/>-->
+        <!--<property name="url" value="${url1}"/>-->
+        <!--<property name="username" value="${username1}"/>-->
+        <!--<property name="password" value="${password1}"/>-->
+        <!--</dataSource>-->
+        <!--</environment>-->
+    </environments>
+    <mappers>
+        <!-- <mapper resource="UserMapper.xml"/>-->
+
+
+        <!-- 如果要使用类的路径，需要 mapper.xml和接口在同一个包下，并且名字相同  -->
+        <!-- <mapper class="cn.itcast.mybatis.mapper.UserMapper"/> -->
+        <!-- 会扫描该路径下的所有的mapper.xml文件  -->
+        <!--<package name="me.jiatao.ssm.mybatis.A_Simple"/>-->
+
+        <!-- 引入外部的局部的mapper.xml -->
+        <mapper resource="mybatisMapper/mapper.xml"/>
+
+        <mapper resource="mybatisMapper/mapperCURD.xml"/>
+    </mappers>
+</configuration>
