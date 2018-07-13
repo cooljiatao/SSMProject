@@ -45,4 +45,10 @@ public interface UserDaoMapper {
     User selectByNameAndAge(@Param("userName") String userName, @Param("age") int age);
 
     List<User> queryUserByTableName(@Param("tableName") String tableName);
+
+    List<User> queryAllUserUseResultMap();
+
+    List<User> queryAllUserUseSQL();
+
+    List<User> queryAllUserUseSQL2();
 }

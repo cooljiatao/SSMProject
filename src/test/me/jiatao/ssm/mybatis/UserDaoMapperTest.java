@@ -56,6 +56,9 @@ public class UserDaoMapperTest {
         System.out.println(user);
     }
 
+    /**
+     * 插入操作
+     */
     @Test
     public void testSaveUser() {
         User user = new User();
@@ -71,6 +74,9 @@ public class UserDaoMapperTest {
         System.out.println(user.getId());
     }
 
+    /**
+     * 更新操作
+     */
     @Test
     public void testUpdateUser() {
         User user = new User();
@@ -81,12 +87,18 @@ public class UserDaoMapperTest {
         sqlSession.commit();
     }
 
+    /**
+     * 删除测试
+     */
     @Test
     public void testDeleteUserById() {
         userDaoMapper.deleteUserById(8l);
         sqlSession.commit();
     }
 
+    /**
+     * 返回 int 类型
+     */
     @Test
     public void testQueryCount() {
         Integer count = userDaoMapper.queryCount();
@@ -94,13 +106,19 @@ public class UserDaoMapperTest {
     }
 
 
+    /**
+     * 使用 #{ } 传递参数
+     */
     @Test
-    public void testselect() {
+    public void testWhere() {
         User user = userDaoMapper.selectByNameAndAge("zhangsan", 30);
         System.out.println(user);
     }
 
 
+    /**
+     * 使用 ${ } 拼接字符串
+     */
     @Test
     public void testQueryUserByTableName() {
         List<User> users = userDaoMapper.queryUserByTableName("tb_user");
@@ -109,4 +127,38 @@ public class UserDaoMapperTest {
         }
     }
 
+
+    /**
+     * 自定义resultMap
+     * 用于解析数据库字段 与 jave属性
+     */
+    @Test
+    public void testQueryAllUserUseResultMap() {
+        List<User> users = this.userDaoMapper.queryAllUserUseResultMap();
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
+
+    /**
+     * 使用本地预定于sql
+     */
+    @Test
+    public void testQueryAllUserUseSql() {
+        List<User> users = this.userDaoMapper.queryAllUserUseSQL();
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
+
+    /**
+     * 引入外部sql
+     */
+    @Test
+    public void testQueryAllUserUseSql2() {
+        List<User> users = this.userDaoMapper.queryAllUserUseSQL2();
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
 }

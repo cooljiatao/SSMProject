@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace :名称空间，唯一标识，不需要特别的起名称，只要保证所有的mapper中的名称空间，唯一即可 -->
+<mapper namespace="me.jiatao.ssm.mybatis.B_Mapper.UserDaoMapper">
+
+    <sql id="userInfoSql">
+        id,user_name,password,name,sex
+    </sql>
+
+ <!--   resultMap:用于数据库字段与java对象属性映射，手动指定映射关系
+    id:唯一标识
+    type：结果集对应的java类型
+    autoMapping：如果数据库字段与java对象属性一致可自动完成映射-->
+    <resultMap id="userResultMapSql" type="User" autoMapping="true">
+       <!-- id:表的主键
+        result：完成其他字段映射-->
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+    </resultMap>
+    <select id="queryAllUserUseSQL" resultMap="userResultMapSql">
+        select <include refid="userInfoSql" />
+        from tb_user
+    </select>
+
+    <select id="queryAllUserUseSQL2" resultMap="userResultMapSql">
+        select <include refid="sqlString.userInfoSql" />
+        from tb_user
+    </select>
+</mapper>

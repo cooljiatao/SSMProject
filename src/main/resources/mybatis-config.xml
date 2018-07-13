@@ -7,15 +7,15 @@
     <properties resource="dbMybatis.properties"></properties>
 
     <settings>
-        <!-- 开启驼峰命名规则匹配  -->
-        <!-- 数据库中user_name映射成pojo中的userName -->
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    <!-- 开启驼峰命名规则匹配  -->
+    <!-- 数据库中user_name映射成pojo中的userName -->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
     <typeAliases>
         <!-- type :类的全路径， alias ：别名 -->
         <!--mapper中resultType 如果是当前type 则使用alias的值代替-->
-         <!--<typeAlias type="me.jiatao.ssm.mybatis.User" alias="User"/>-->
+        <!--<typeAlias type="me.jiatao.ssm.mybatis.User" alias="User"/>-->
 
 
         <!-- name 表示包的路径
@@ -58,10 +58,16 @@
         <!--<package name="me.jiatao.ssm.mybatis.A_Simple"/>-->
 
         <!-- 引入外部的局部的mapper.xml -->
-        <mapper resource="mybatisMapper/mapper.xml"/>
+        <!--<mapper resource="mybatisMapper/mapper.xml"/>-->
 
-        <mapper resource="mybatisMapper/mapperCURD.xml"/>
+        <!--<mapper resource="mybatisMapper/mapperCURD.xml"/>-->
 
-        <mapper resource="mybatisMapper/mapperMapper.xml"/>
+        <!--<mapper resource="mybatisMapper/mapperMapper.xml"/>-->
+
+        <mapper resource="mybatisMapper/mapperResultMap.xml"/>
+
+        <mapper resource="mybatisMapper/mapperResultSql.xml"/>
+
+        <mapper resource="mybatisMapper/sqlMapper.xml"/>
     </mappers>
 </configuration>
