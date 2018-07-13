@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace :名称空间，唯一标识，不需要特别的起名称，只要保证所有的mapper中的名称空间，唯一即可 -->
+<mapper namespace="me.jiatao.ssm.mybatis.B_Mapper.UserDaoMapper">
+    <!-- sql语句的映射, mapperedStatement
+       resultType ：结果集对应的java类型,需要书写类的全路径
+       #{id} :相当于 ？ 表示参数的占位
+
+       id属性：当前名称空间下的statement的唯一标识。必须。要求id和mapper接口中的方法的名字一致。
+       resultType：将结果集映射为java的对象类型。必须（和 resultMap 二选一）
+
+       parameterType：传入参数类型。可以省略
+     -->
+    <select id="queryAllUser" resultType="User">
+        select *
+        from tb_user
+    </select>
+
+    <select id="queryUserById" resultType="me.jiatao.ssm.mybatis.User" parameterType="long">
+        select *
+        from tb_user
+        where id = #{id}
+    </select>
+
+    <select id="queryCount" resultType="int">
+    select count(1) from tb_user;
+    </select>
+
+
+    <!--
+		1、如果传入多个参数可以使用 0，1 。。。自然数去取出对应的数据， 0标识方法中的第一个参数，
+		2、可以使用param1 ,param2
+		3、在方法的定义上使用注解@param去为传入的参数定义一个名字
+	 -->
+    <select id="selectByNameAndAge" resultType="User">
+   select * from tb_user where user_name = #{param1} and age=#{age}
+    </select>
+
+    <!-- ${} 属于sql语句的拼接
+		 获取值的方式：
+		 1、直接书写${value}
+		 2、使用@Param注解去为参数起名字
+	-->
+    <select id="queryUserByTableName" resultType="User">
+		select * from  ${tableName}
+	</select>
+
+
+
+    <!--insert ：里面书写insert语句的。
+    几个属性说明:
+    id属性：必须的，当前名称空间下的statement的唯一标识(必须属性)
+    parameterType：传入的参数类型，可以省略。
+    useGeneratedKeys:是否使用数据库的自动增长
+    keyColumn:数据库表的列名
+    keyProperty:pojo类的属性名
+    标签内部：具体的sql语句。insert语句
+    使用#{} 去替换一个变量。
+    -->
+    <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO tb_user (
+            user_name,
+            password,
+            name,
+            age,
+            sex,
+            birthday,
+            created,
+            updated
+        )
+        VALUES
+            (
+                #{userName},
+                #{password},
+                #{name},
+                #{age},
+                #{sex},
+                #{birthday},
+                NOW(),
+                NOW()
+            );
+
+    </insert>
+    <update id="updateUser">
+        UPDATE mybatis.tb_user
+        SET
+            user_name = #{userName},
+            password  = #{password},
+            name      = #{name},
+            age       = #{age},
+            sex       = #{sex},
+            birthday  = #{birthday},
+            updated   = NOW()
+        WHERE
+            (id = #{id});
+    </update>
+
+    <delete id="deleteUserById">
+        DELETE FROM tb_user
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
