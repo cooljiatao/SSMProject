@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 名称空间，名称没有要求，但是要唯一 如果动态代理要求 名称空间一定是接口的全路径 -->
+<mapper namespace="me.jiatao.ssm.mybatis.C_Relationship.OrderMapper">
+	
+	<select id="queryUserById" resultType="User">
+		select * from tb_user where id = #{id}	
+	</select>
+	
+	<resultMap type="Order" id="OrderUserLazyResultMap">
+		<id column="id" property="id"/>
+		<association property="user" javaType="User" select="queryUserById" column="user_id"></association>
+	</resultMap>
+	
+	<select id="queryOrderAndUserLazy" resultMap="OrderUserLazyResultMap">
+		select * from tb_order where order_number = #{orderNumber}
+	</select>
+
+	<!-- 使用手动映射完成自对象的映射 子标签id不要省略 -->
+	<resultMap type="Order" id="OrderUserResultMap" autoMapping="true">
+		<id column="o_id" property="id" />
+		<!-- association 定义属性是自对象的映射关系 property:标识自对象的属性名成 javaType：自对象的类型 association 
+			子标签的内容，参考resultMap autoMapping:完成自对象的自动映射 -->
+		<association property="user" javaType="User" autoMapping="true">
+			<id column="user_id" property="id" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Order" id="orderUserDetailResultMap" autoMapping="true" extends="OrderUserResultMap">
+		<!-- 如果自对象是集合，需要使用collection去完成映射 property：自对象的属性名字 javaType: 集合的类型 ofType:集合中保存的数据类型 
+			collection 标签里面可以书写的内容，参考resultMap -->
+		<collection property="details" javaType="List" ofType="Orderdetail"
+			autoMapping="true" >
+			<id column="d_id" property="id"></id>
+		</collection>
+	</resultMap>
+
+	<resultMap type="Order" id="orderUserDetailItemResultMap" autoMapping="true">
+		<id column="o_id" property="id"></id>
+		<association property="user" javaType="User" autoMapping="true">
+			<id column="user_id" property="id" />
+		</association>
+		
+		<collection property="details" javaType="List" ofType="Orderdetail" autoMapping="true">
+			<id column="d_id" property="id"></id>
+			
+			<association property="item" javaType="Item" autoMapping="true">
+				<id column="item_id" property="id"/>
+			</association>
+		</collection>
+	</resultMap>
+	<select id="queryOrderAndUserByOrderNumber" resultMap="OrderUserResultMap">
+		SELECT
+		o.id as o_id , u.id as u_id , o.* , u.*
+		FROM tb_order o
+		LEFT JOIN
+		tb_user u ON u.id = o.user_id
+		WHERE o.order_number = #{orderNumber};
+	</select>
+
+
+	<select id="queryOrderAndUserAndDetailByOrderNumber" resultMap="orderUserDetailResultMap">
+		SELECT
+		o.id AS o_id,
+		u.id AS u_id,
+		d.id AS d_id,
+		o.*,
+		u.*,
+		d.*
+		FROM
+		tb_order o
+		LEFT JOIN tb_user u ON u.id = o.user_id
+		LEFT JOIN tb_orderdetail d ON o.id = d.order_id
+		WHERE
+		o.order_number = #{orderNumber};
+	</select>
+	<select id="queryOrderAndUserAndDetailAndItemByOrderNumber" resultMap="orderUserDetailItemResultMap">
+		SELECT
+			o.id AS o_id,
+			u.id AS u_id,
+			d.id AS d_id,
+			o.*,
+			u.*,
+			d.* ,
+			i.*
+		FROM
+		tb_order o
+		LEFT JOIN tb_user u ON u.id = o.user_id
+		LEFT JOIN tb_orderdetail d ON o.id = d.order_id
+		LEFT JOIN tb_item i ON i.id = d.item_id
+		WHERE
+			o.order_number = #{orderNumber};
+	</select>
+
+</mapper>

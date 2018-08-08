@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace :名称空间，唯一标识，不需要特别的起名称，只要保证所有的mapper中的名称空间，唯一即可 -->
+<mapper namespace="me.jiatao.ssm.mybatis.C_Sentence.SentenceMapper">
+
+    <select id="ifSQL" resultType="me.jiatao.ssm.mybatis.User">
+        select * from tb_user
+        <if test=" name !=null ">
+            where name like #{name}
+        </if>
+    </select>
+</mapper>

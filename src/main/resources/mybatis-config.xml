@@ -24,6 +24,17 @@
         <package name="me.jiatao.ssm.mybatis"/>
     </typeAliases>
 
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <!-- 定义数据库方言 -->
+            <property name="dialect" value="mysql"/>
+            <!-- 该参数默认为false -->
+            <!-- 是否查询总计路数 -->
+            <property name="rowBoundsWithCount" value="true"/>
+        </plugin>
+    </plugins>
+
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -47,6 +58,7 @@
     </environments>
     <mappers>
 
+        <!--TODO:引入外部文件三种方式 START-->
         <!-- 引入外部的局部的mapper.xml -->
         <!-- <mapper resource="UserMapper.xml"/>-->
         <!-- <mapper resource="file:///mybatisMapper/mapper.xml"/> -->
@@ -57,17 +69,17 @@
         <!-- 会扫描该路径下的所有的mapper.xml文件  -->
         <!--<package name="me.jiatao.ssm.mybatis.A_Simple"/>-->
 
+        <!--TODO:引入外部文件三种方式 END-->
+
         <!-- 引入外部的局部的mapper.xml -->
         <!--<mapper resource="mybatisMapper/mapper.xml"/>-->
-
         <!--<mapper resource="mybatisMapper/mapperCURD.xml"/>-->
-
         <!--<mapper resource="mybatisMapper/mapperMapper.xml"/>-->
-
         <mapper resource="mybatisMapper/mapperResultMap.xml"/>
-
         <mapper resource="mybatisMapper/mapperResultSql.xml"/>
-
         <mapper resource="mybatisMapper/sqlMapper.xml"/>
+        <mapper resource="mybatisMapper/sentenceMapper.xml"/>
+        <package name="me.jiatao.ssm.mybatis.C_Sentence"/>
+        <package name="me.jiatao.ssm.mybatis.C_Relationship"/>
     </mappers>
 </configuration>

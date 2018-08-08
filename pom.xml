@@ -91,6 +91,24 @@
         </dependency>
         <!--TODO:MyBatis END-->
 
+        <!--TODO:MyBatis 分页 START-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>3.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <!--TODO:MyBatis 分页 END-->
+
         <!--TODO:Database START-->
         <!-- https://mvnrepository.com/artifact/c3p0/c3p0 -->
         <dependency>
@@ -123,17 +141,26 @@
         </dependency>
         <!--TODO:JSP END-->
 
-        <dependency>
-            <!-- jsoup HTML parser library @ https://jsoup.org/ -->
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.11.3</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--&lt;!&ndash; jsoup HTML parser library @ https://jsoup.org/ &ndash;&gt;-->
+            <!--<groupId>org.jsoup</groupId>-->
+            <!--<artifactId>jsoup</artifactId>-->
+            <!--<version>1.11.3</version>-->
+        <!--</dependency>-->
 
     </dependencies>
 
     <build>
         <finalName>SSMProject</finalName>
+        <!--pom配置一下编译xml文件-->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>

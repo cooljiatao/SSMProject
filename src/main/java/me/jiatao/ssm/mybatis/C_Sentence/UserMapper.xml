@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 名称空间，名称没有要求，但是要唯一 如果动态代理要求 名称空间一定是接口的全路径 -->
+<mapper namespace="me.jiatao.ssm.mybatis.C_Sentence.UserMapper">
+
+	<!-- <sql id="userColumn"> id,user_name,password,sex </sql> -->
+	
+	<!--<cache />-->
+	
+	<select id="queryAllUser" resultType="User">
+		select * from tb_user 
+	</select>
+
+
+	<!-- if标签进行判断如果条件成立，执行标签内部的内容 test：去书写if中的判断条件 -->
+	<select id="queryUserLikeName" resultType="User">
+		select * from tb_user where sex = 1
+		<if test="name != null &amp;&amp;  name != '' ">
+			and name like #{name}
+		</if>
+  		
+
+	</select>
+	<!-- choose 是一个外部的标签， when 是 choose内标签，进行判断 ，并且test是书写判断条的地方 ， 如果上面的成立，下面的不会执行 
+		ortherWise : 当when所有有的都不成立的时候，执行 -->
+	<select id="queryUserLikeNameOrAge" resultType="User">
+		select * from tb_user where sex = 1
+		<choose>
+			<when test="age != null">
+				and age = #{age}
+			</when>
+			<when test="name != null and name != '' ">
+				and name like #{name}
+			</when>
+			<otherwise>
+				and user_name = 'wangwu'
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- -->
+	<select id="queryUserLikeNameOrAge2" resultType="User">
+		select * from tb_user
+		<where>
+			<if test="age != null">
+				and age = #{age}
+			</if>
+			<if test="name != null and name != '' ">
+				and name like #{name}
+			</if>
+		</where>
+	</select>
+	<update id="updateUser">
+		UPDATE tb_user
+		<set>
+			<if test="userName != null">
+				user_name = #{userName},
+			</if>
+			<if test="password != null ">
+				password = #{password},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+		</set>
+		WHERE
+		(id = #{id});
+	</update>
+	<!-- 
+	collection:要遍历的集合
+	item：遍历之后的每一个变量
+	在foreach 内部可以使用#来获取变量变量
+	separator:分隔符
+	open:标识以什么字符开始
+	close：标识以什么字符结束
+	 -->
+	<select id="queryUserByIds" resultType="User">
+		select * from tb_user where  id in
+			<foreach collection="ids" open=" (" close=")" item="id" separator=",">
+				#{id}
+			</foreach>
+		
+	</select>
+</mapper>

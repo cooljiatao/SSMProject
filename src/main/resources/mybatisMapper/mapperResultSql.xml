@@ -28,4 +28,5 @@
         select <include refid="sqlString.userInfoSql" />
         from tb_user
     </select>
+
 </mapper>
